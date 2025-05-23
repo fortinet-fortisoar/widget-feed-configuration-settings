@@ -1,0 +1,126 @@
+<!-- Copyright start
+  MIT License
+  Copyright (c) 2024 Fortinet Inc
+  Copyright end -->
+<form data-ng-submit="save()" class="noMargin" name="scheduleForm" data-ng-class="{'state-wait': processing }"
+  novalidate>
+  <fieldset data-ng-disabled="!allowEdit">
+    <div class="row">
+      <div data-ng-if="!params.form.schedule.kwargs.exit_if_running"
+        class="col-md-12 font-size-14 control-label margin-bottom-md padding-0">Do you want to schedule the ingestion?<span
+          data-ng-show="field.required && form.config.ignoreRequired" class="text-danger">*</span></div>
+      <div data-ng-if="!params.form.schedule.kwargs.exit_if_running" class="cs-select width-150 float-left">
+        <select class="control-label form-control width-150" data-ng-model="params.form.scheduled">
+          <option value="N">No</option>
+          <option value="Y">Yes</option>
+        </select>
+        <span class="fa fa-sort-desc"></span>
+      </div>
+      <div class="col-md-12 padding-left-0 margin-top-md">
+        <div class="col-md-12 config-schedule margin-bottom-md disable-button"
+          data-ng-class="{'disable-button': params.form.scheduled ==='N'}">
+          <div class="flex font-size-12 col-md-12 margin-bottom-md margin-top-sm">
+            By : <a class="margin-right-sm margin-left-sm" ng-disabled="params.form.scheduled==='N'"
+              ng-click="setCronValue(fields['cronexpression'], 'minute', '5')">
+              Every X minute</a> |
+            <a class="margin-right-sm margin-left-sm" ng-disabled="params.form.scheduled==='N'"
+              ng-click="setCronValue(fields['cronexpression'], 'hourly', '1')">
+              Hourly</a> |
+            <a class="margin-right-sm margin-left-sm" ng-disabled="params.form.scheduled==='N'"
+              ng-click="setCronValue(fields['cronexpression'], 'daily', '')">
+              Daily</a> |
+            <a class="margin-right-sm margin-left-sm" ng-disabled="params.form.scheduled==='N'"
+              ng-click="setCronValue(fields['cronexpression'], 'weekly', '0')">
+              Weekly</a> |
+            <a class="margin-right-sm margin-left-sm" ng-disabled="params.form.scheduled==='N'"
+              ng-click="setCronValue(fields['cronexpression'], 'monthly', '1')">
+              Monthly </a> |
+            <a class="margin-right-sm margin-left-sm" ng-disabled="params.form.scheduled==='N'"
+              ng-click="setCronValue(fields['cronexpression'], 'yearly', '1')">
+              Yearly</a>
+          </div>
+          <div class="col-md-11 cron-section padding-top-md margin-left-15">
+            <div class="pull-left width-15">
+              <div class="halign-center"><input id="minute-schedule-crontab" name="minute-schedule-crontab" type="text"
+                  class="form-control  halign-center input-sm" data-ng-model="scheduleConfig.crontab.minute"
+                  data-ng-change="updateCron(true)" /></div>
+              <div class="halign-center"><label class="control-label muted">minute</label></div>
+            </div>
+            <div class="pull-left width-15">
+              <div class="halign-center"><input id="hour-schedule-crontab" name="hour-schedule-crontab" type="text"
+                  class="form-control halign-center input-sm" data-ng-model="scheduleConfig.crontab.hour"
+                  data-ng-change="updateCron(true)" /></div>
+              <div class="halign-center"><label class="control-label muted">hour</label></div>
+            </div>
+            <div class="pull-left width-15">
+              <div class="halign-center"><input id="dom-schedule-crontab" name="dom-schedule-crontab" type="text"
+                  class="form-control halign-center input-sm" data-ng-model="scheduleConfig.crontab.day_of_month"
+                  data-ng-change="updateCron(true)" /></div>
+              <div class="halign-center"><label class="control-label muted">day of month</label></div>
+            </div>
+            <div class="pull-left width-15">
+              <div class=""><input id="moy-schedule-crontab" name="moy-schedule-crontab" type="text"
+                  class="form-control halign-center input-sm" data-ng-model="scheduleConfig.crontab.month_of_year"
+                  data-ng-change="updateCron(true)" /></div>
+              <div class="halign-center"><label class="control-label muted">month</label></div>
+            </div>
+            <div class="pull-left width-15">
+              <div class="halign-center"><input id="doy-schedule-crontab" name="doy-schedule-crontab" type="text"
+                  class="form-control halign-center input-sm" data-ng-model="scheduleConfig.crontab.day_of_week"
+                  data-ng-change="updateCron(true)" /></div>
+              <div class="halign-center"><label class="control-label muted">day of week</label></div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <label class="control-label cron-text font-italic padding-top-md">" {{cronDescriber}} "</label>
+          </div>
+          <div class="form-group margin-left-md"
+            data-ng-class="{ 'has-error': scheduleForm['timezoneId'].$invalid && scheduleForm['timezoneId'].$touched }">
+            <label for="timezone" class="control-label">Timezone: <span
+                data-uib-tooltip="Select the timezone that you want to export the report in. It uses UTC by default."
+                data-tooltip-append-to-body="true"><i class="icon icon-information"></i></span></label>
+              <div class="btn-group cd-dropdown padding-top-sm" uib-dropdown is-open="fieldDropDown.isopen">
+                <button class="form-control input-sm" data-ng-disabled="disabled" uib-dropdown-toggle type="button"
+                  data-toggle="dropdown">{{scheduleConfig.kwargs.timezone===undefined ||
+                  scheduleConfig.kwargs.timezone===null ? 'Select' : scheduleConfig.kwargs.timezone}}
+                  <span class="caret"></span></button>
+                <div class="input-group search-style open-search margin-0 padding-0">
+                  <input type="text" class="form-control filter-height-style" ng-click="searchZoneName($event)"
+                    ng-model="params.srchBox" style="width:100%" placeholder="Search" aria-labelledby="search-btn">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default filter-height-style" ng-click="searchZoneName($event)"
+                      aria-label="Search" id="searchzone-schedule-details-btn">
+                      <span class="icon icon-search"></span>
+                    </button>
+                  </span>
+                </div>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-single-button">
+                  <li>
+                    <a href="#" ng-click="selectTimezone(undefined)">
+                      Select
+                    </a>
+                  </li>
+                  <li data-ng-repeat="timezone in params.timezones | filterZone:params.srchBox" class="primary-div">
+                    <a href="#" ng-click="selectTimezone(timezone)">
+                      {{timezone.utc}}
+                      <span class="menu-subitem">{{timezone.text}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div ng-form="scheduleForm" name="scheduleForm" class="margin-left-negative-15">
+      <button id="widget-edit-save" data-ng-if="params.updating === false && allowEdit" class="btn btn-sm btn-primary"
+        data-ng-disabled="!scheduleForm.$dirty || params.isSaveDisabled" data-ng-click="save(scheduleForm)">
+        <i class="icon icon-check margin-right-sm"></i>Save</button>
+      <button data-ng-if="params.updating === true" type="button" class="btn btn-sm btn-primary"
+        ng-disabled="params.updating === true || params.isSaveDisabled" id="saving-edit-schedules">
+        <cs-spinner class="pull-left margin-top-xsm state-wait button-spinner margin-right-sm"
+          data-show-background="true" data-no-margin="margin-0"></cs-spinner>Saving</button>
+    </div>
+  </fieldset>
+</form>

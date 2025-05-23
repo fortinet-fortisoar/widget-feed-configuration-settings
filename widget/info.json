@@ -1,24 +1,24 @@
 {
-    "name": "feedConfigurationSettings",
-    "version": "1.1.1",
-    "title": "Feed Configuration Settings",
-    "subTitle": "Threat Intel Feed Configuration Settings",
-    "published_date":"1714986057",
-    "metadata": {
-        "pages": [
-            "Listing"
-        ],
-        "certified": "Yes",
-        "publisher": "Fortinet",
-        "snapshots": [
-            "https://repo.fortisoar.fortinet.com/fsr-widgets/feedConfigurationSettings-1.1.1/images/feed-configuration-settings.png",
-            "https://repo.fortisoar.fortinet.com/fsr-widgets/feedConfigurationSettings-1.1.1/images/feed-configuration-outgoing-feed-settings-view.png",
-            "https://repo.fortisoar.fortinet.com/fsr-widgets/feedConfigurationSettings-1.1.1/images/feed-configuration-feed-to-indicator-linking-view.png"
-        ],
-        "description": "Threat Intel Feed Configuration Settings",
-        "help_online":"https://github.com/fortinet-fortisoar/widget-feed-configuration-settings/blob/release/1.1.0/README.md",
-        "compatibility": [
-            "7.2.0"
-        ]
-    }
+  "name": "feedConfigurationSettings",
+  "version": "2.0.0",
+  "title": "Feed Configuration Settings",
+  "subTitle": "Threat Intel Feed Configuration Settings",
+  "published_date":"1733388300",
+  "metadata": {
+      "pages": [
+          "Listing"
+      ],
+      "certified": "Yes",
+      "publisher": "Fortinet",
+      "snapshots": [
+          "https://repo.fortisoar.fortinet.com/fsr-widgets/feedConfigurationSettings-2.0.0/images/feed-configuration-settings.png",
+          "https://repo.fortisoar.fortinet.com/fsr-widgets/feedConfigurationSettings-2.0.0/images/feed-configuration-outgoing-feed-settings-view.png",
+          "https://repo.fortisoar.fortinet.com/fsr-widgets/feedConfigurationSettings-2.0.0/images/feed-configuration-feed-to-indicator-linking-view.png"
+      ],
+      "description": "Threat Intel Feed Configuration Settings",
+      "help_online":"https://github.com/fortinet-fortisoar/widget-feed-configuration-settings/blob/release/2.0.0/README.md",
+      "compatibility": [
+          "7.2.0"
+      ]
+  }
 }

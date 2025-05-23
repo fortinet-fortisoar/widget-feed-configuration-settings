@@ -6,39 +6,6 @@ Copyright end */
   border: none !important;
 }
 
-ul.feed-config-tabs {
-  border-bottom: 2px solid #000;
-}
-
-.feed-config-tabs li {
-  float: left;
-  padding: 4px 8px;
-  margin-right: 2px;
-}
-
-.feed-config-tabs li:hover {
-  padding: 4px 8px;
-  background: #22a6af;
-}
-
-.feed-config-tabs li a {
-  color: #ffffff !important;
-}
-
-.feed-config-tabs li a:hover {
-  background: none;
-}
-
-.feed-general-settings {
-  border-left: 2px solid #22a6af;
-}
-
-
-.dataset-collections-container table tr th,
-.dataset-collections-container table tr td {
-  border: 0 none !important;
-}
-
 .feed-configuration-container .general-settings-footer {
   left: 247px;
   padding-top: 18px;
@@ -50,82 +17,18 @@ ul.feed-config-tabs {
   left: 52px !important;
 }
 
-.feed-config-widget.light .feed-config-tabs li.active{
-  background:#4676b2;
+.feed-configuration-container .panel-default a {
+  &:hover {
+    text-decoration: none;
+  }
 }
 
-.feed-config-widget.steel .feed-config-tabs li.active,
-.feed-config-widget.dark .feed-config-tabs li.active{
-  background:#22a6af;
-}
+.threat-feed-config-uib-accordion {
+  max-height: calc(100vh - 300px);
+  overflow: auto;
 
-
-.feed-config-widget.light .feed-config-tabs li{
-  background:#efefef;
-}
-
-.feed-config-widget.steel .feed-config-tabs li{
-  background:#000000;
-}
-
-.feed-config-widget.dark .feed-config-tabs li{
-  background:#000000;
-}
-
-.feed-config-widget.light .feed-config-tabs li a{
-  color:#151515!important;
-}
-
-.feed-config-widget.light .feed-config-tabs li.active a{
-  color:#efefef!important;
-}
-
-.feed-config-widget.light ul.feed-config-tabs{
- border-bottom: 2px solid #efefef;
-}
-
-.feed-config-widget.light table,
-.feed-config-widget.light table tr.body{
-  border:1px solid #ddd;
-}
-
-.feed-config-widget.light table,
-.feed-config-widget.dark table{
-  border:none;
-}
-
-.feed-config-widget.steel table tr.body{
-  border:1px solid #3A3D44;
-}
-
-.feed-config-widget.dark table tr.body{
-  border:1px solid #3A3D44;
-}
-
-.feed-config-widget.light table tr.head{
-  background:#efefef;
-}
-
-.feed-config-widget.steel table tr.head{
-  background:#000000;
-}
-
-.feed-config-widget.dark table tr.head{
-  background:#000000;
-}
-
-.tid-endpoint-list, .tid-authentication-list{
-  list-style-type: lower-alpha;
-  padding-left: 15px;
-}
-
-.dataset-refresh{
-  border-left: 2px solid #323b47;
-}
-
-.outgoing-feed-container{
-  max-height:calc(100vh - 300px);
-  overflow-y:auto;
-  overflow-x:hidden;
-  padding-bottom:50px;
+  .panel-heading {
+    padding: 10px 15px !important;
+    background-color: transparent !important;
+  }
 }

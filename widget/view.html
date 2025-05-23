@@ -3,229 +3,489 @@
   Copyright (c) 2024 Fortinet Inc
   Copyright end -->
 <link rel="stylesheet" type="text/css"
-  href="feedConfigurationSettings-1.1.1/widgetAssets/css/feedConfigurationSettings.css" />
+  href="feedConfigurationSettings-2.0.0/widgetAssets/css/feedConfigurationSettings.css" />
 <div class="widget feed-cofiguration-settings-widget widget-container">
   <div class="display-flex-space-between">
     <div class="padding-right-0 padding-left-0 widget-dashboard-title-width"
       data-ng-class="(page === 'dashboard' || page === 'reporting') ? 'widget-dashboard-title-width' : 'widget-title-width'">
-      <h5 class="margin-top-0 margin-bottom-0 text-overflow ng-binding">{{config.title}}
-      </h5>
-    </div>
-    <div class="padding-right-0 padding-left-0"
-      data-ng-class="(page === 'dashboard' || page === 'reporting') ? 'widget-dashboard-actions-width' : 'widget-actions-width'">
-      <span class="fa btn widget-action-icon btn-sm pull-right" data-ng-click="collapsed = !collapsed"
-        data-ng-class="{'fa-caret-up': !collapsed, 'fa-caret-down': collapsed}"></span>
     </div>
   </div>
-  <div class="feed-config-widget {{getTheme}}" data-ng-hide="collapsed">
-    <div class="padding-left-lg padding-bottom-lg">
-      <div class="feed-configuration-container position-relative">
-        <div class="row">
-          <div class="col-md-12">
-            <ul class="nav feed-config-tabs margin-bottom-lg">
-              <li data-ng-repeat="tab in tabsData" data-ng-if="tab.visible"
-                data-ng-class="{'active': tab.active === true }">
-                <a id="debug-tab-{{ tab.name }}" data-ng-click="params.activeTab = tab;getFeedSettings();">{{
-                  tab.title }}</a>
-              </li>
-            </ul>
-            <div class="tab-content">
-              <div class="outgoing-feed-container" data-ng-if="params.activeTab.name === 'outgoingFeed'" >
-                <div class="row">
-                  <div class="col-md-8">
-                    <div class="row">
-                      <div class="col-md-8">
-                        <div class="feed-config-description font-size-12">
-                          <div>You can enable a TAXII Server to create an outgoing feed based on the threat intelligence
-                            you want to share externally.</div>
-                          <div>TAXII clients will be able to subscribe to the collection and receive feeds.</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="" data-ng-if="processing">
-        				<cs-spinner data-show-background="true"></cs-spinner>
-      				</div>
-                    <div data-ng-if="!processing" class="margin-top-xlg">
-                      <div class="muted font-size-14">Enable TAXII Server</div>
-                      <div class="clear-both margin-top-lg">
-                        <ng-form name="params.feedOutgoingStatusForm">
-                          <div class="form-group margin-0">
-                            <label for="feedOutgoingStatus"
-                              class="remote-executable-label margin-right-1 pull-left btn no-border">Status</label>
-                            <button type="button"
-                              class="btn btn-sm no-border line-height-15 active btn-success"
-                              data-ng-disabled="updateProcessing" data-ng-class="params.enableTaxiiServer ? 'btn-success' : 'btn-danger'"
-                              data-ng-model="params.enableTaxiiServer" name="enableTaxiiServer" id="enableTaxiiServer"
-                              data-uib-btn-checkbox="">
-                             {{ params.enableTaxiiServer ? 'Enabled' : 'Disabled' }}</button>
-                          </div>
-                        </ng-form>
-                      </div>
-                      <div class="mertics-widget-border-bottom margin-top-sm"></div>
-                    </div>
-                    <div data-ng-if="!processing && params.enableTaxiiServer">
-                      <div class="margin-top-xlg">
-                        <div class="font-size-14">TAXII Server Details</div>
-                      </div>
-                      <div class="margin-top-lg">
-                        <div class="muted font-size-14">Server Address</div>
-                        <div class="font-size-12">{{taxiiServerAddress}}api/taxii/1/</div>
-                      </div>
-                      <div class="margin-top-lg">
-                        <div class="muted font-size-14">Server Discovery Address</div>
-                        <div class="font-size-12">{{taxiiServerAddress}}api/taxii/1/taxii</div>
-                      </div>
-                      <div class="margin-top-lg">
-                        <div class="muted font-size-14">Authentication</div>
-                        <ol class="tid-authentication-list font-size-12">
-                          <li>Basic Auth with username and password. You could also use <span class="font-italic">https://&lt;username&gt;:&lt;password&gt;@&lt;server_fqhn&gt;/api/taxii/1 </span></li>
-                          <li>Additionally user can use API Key authentication. For more details please refer <span class="font-italic"><a target="_blank" href="https://docs.fortinet.com/document/fortisoar/7.5.0/api-guide/797122/access-keys" title="Authentication API Guide">Authentication API Guide</a></span></li>
-                        </ol>
-                      </div>
-                      <div class="margin-top-lg">
-                        <div class="muted font-size-14">Endpoints Available</div>
-                        <ol class="tid-endpoint-list font-size-12">
-                          <li><span class="font-italic">api/taxii/1/collections</span> : To list all available datasets</li>
-                          <li class="font-size-12"><span class="font-italic">api/taxii/1/collections/&lt;datasetId&gt;</span>: Lists details of a dataset</li>
-                          <li><span class="font-italic">api/taxii/1/collections/&lt;datasetId&gt;/objects</span>: List threat feeds in a dataset</li>
-                          <li><span class="font-italic">api/taxii/1/collections/&lt;datasetId&gt;/objects/&lt;objectId&gt;</span>: List details of a specific feed object</li>
-                        </ol>
-                      </div>
-                      <div class="dataset-collections margin-top-xlg">
-                        <div class="muted font-size-14">Available Datasets</div>
-                        <div class="margin-top-sm font-size-12 font-italic">
-                          All datasets of <span class="font-bold">Threat Intel Feeds</span> module will be listed here.<br/>
-                          You can add more Datasets under the <span class="font-bold">Threat Feeds</span> section.
-                        </div>
-                        <div class="font-size-12 margin-top-sm"><span class="muted">Showing {{datasets.length}} records </span><span class="icon icon-refresh btn btn-sm padding-0 padding-left-md margin-left-sm dataset-refresh" data-ng-click="getDataSets();" data-uib-tooltip="Refresh" role="button"></span></div>
-                        <div class="dataset-collections-container margin-top-sm">
-                          <div class="row">
-                            <div class="col-md-9">
-                              <table class="table font-size-12">
-                                <tr class="head">
-                                  <th width="50%">Dataset Name</th>
-                                  <th width="30%">ID</th>
-                                  <th width="20%">URL</th>
-                                </tr>
-                                <tr class="body" data-ng-if="datasets.length > 0" data-ng-repeat="dataset in datasets">
-                                  <td width="50%">{{dataset.name}}</td>
-                                  <td width="30%">{{dataset.uuid}}&nbsp;</td>
-                                  <td width="20%">
-                                    <div>
-                                     <div class="display-inline-block text-center" data-ng-click="copyDatasetLink(dataset.uuid,'taxii')" data-uib-tooltip="Copy URL for JSON formatted dataset feed">
-                                       <div class="active-color icon icon-iframe" 
-              data-tooltip-append-to-body="true"></div> 
-                                       <div class="active-color font-07em">
-                                       JSON
-                                       </div>
-                                    </div>
-                                    <div class="display-inline-block text-center margin-left-15" data-ng-click="copyDatasetLink(dataset.uuid,'csv')" data-uib-tooltip="Copy URL for CSV formatted dataset feed">
-                                  <div class="active-color icon icon-grid-list" 
-              data-tooltip-append-to-body="true"></div> 
-                                      <div class="active-color font-07em">
-                                        CSV
-                                      </div>
-                                    </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr class="body" data-ng-if="!datasetProcessing && datasets.length === 0">
-                                  <td colspan="2" class="muted font-size-12 text-center">No datasets found.</td>
-                                </tr>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+  <div data-ng-show="getKeyStoreRecord" class="row position-relative full-height">
+    <form name="feedConfigurationSettingsForm" class="feed-configuration-container">
+      <div class="col-md-7 threat-feed-config-uib-accordion padding-top-30">
+        <div class="font-size-25 muted-80 line-height-1 padding-bottom-md">Threat Feed Rules</div>
+        <p class="font-Size-13 muted"><span>Configure threat feed rules on this page to manage threat
+            intelligence from different sources.</span></p>
+        <uib-accordion close-others="true">
+          <div uib-accordion-group class="panel-default" id="accordion-feed-to-indicator-linking"
+            is-open="toggleFeedToIndicatorLinking.open" data-ng-disabled="!feedRules.feedToIndicatorLinking.enabled"
+            ng-form="feedToIndicatorLinkingForm" name="feedToIndicatorLinkingForm">
+            <uib-accordion-heading class="padding-md">
+              <div data-ng-class="{'queue-text-active-color': toggleFeedToIndicatorLinking.open}"
+                data-ng-click="toggleFeedRules(feedRules.feedToIndicatorLinking, $event)">
+                <div class="margin-right-lg pull-left">
+                  <span class="queue-card-actions">&nbsp;<i class="fa"
+                      data-ng-class="toggleFeedToIndicatorLinking.open===true ? 'fa-chevron-down' : 'fa-chevron-right'"></i></span>
+                </div>
+                <div class="display-flex" style="justify-content: space-between;">
+                  <div class="queue-card-header-text margin-right-3">Threat Feed To
+                    Indicator Linking</div>
+                  <div class="form-group margin-right-md">
+                    <label for="feedToIndicatorLinkingSwitchSlider"
+                      class="margin-0 switch switch-pill switch-label switch-success"
+                      data-ng-click="$event.stopPropagation();">
+                      <input type="checkbox" class="switch-input" id="feedToIndicatorLinkingSwitchSlider"
+                        name="feedToIndicatorLinkingSwitchSlider"
+                        data-ng-model="feedRules.feedToIndicatorLinking.enabled"
+                        data-ng-change="feedToIndicatorLinkingForm.$setDirty()"
+                        data-ng-model-options="{ updateOn: 'default' }" />
+                      <span class="switch-slider" data-checked="Enabled" data-unchecked="Disabled"></span>
+                    </label>
                   </div>
                 </div>
               </div>
-              <div data-ng-if="params.activeTab.name === 'general'">
-                <div class="row">
-                  <div class="col-md-8">
-                    <div class="margin-top-lg">
-                      <div class="font-size-16"> Feed To Indicator Linking</div>
-                      <span class="font-size-12 muted font-italic">Select feed confidence threshold for automatically
-                        updating matching indicator record reputation</span>
-                    </div>
-                    <div data-ng-if="processing">
-        				<cs-spinner data-show-background="true"></cs-spinner>
-      				</div>
-                    <ng-form data-ng-if="!processing" name="params.feedIndicatorLinking">
-                      <div class="margin-top-xlg">
-                        <div class="muted font-size-14">Enable Feed To Indicator Linking</div>
-                        <div class="clear-both margin-top-lg">
-                          <div class="form-group margin-0">
-                            <label for="feedIndicatorLinkingStatus"
-                              class="remote-executable-label margin-right-1 pull-left">Status</label>
-                            <button type="button"
-                              class="btn btn-sm no-border line-height-15 active btn-success"
-                              data-ng-disabled="updateProcessing" data-ng-class="params.enableFeedIndicatorLinking ? 'btn-success' : 'btn-danger'"
-                              data-ng-model="params.enableFeedIndicatorLinking" name="feedIndicatorLinkingStatus"
-                              id="feedIndicatorLinkingStatus" data-uib-btn-checkbox="">{{
-                              params.enableFeedIndicatorLinking ? 'Enabled' : 'Disabled' }}</button>
-                          </div>
-                        </div>
-                        <div class="mertics-widget-border-bottom margin-top-sm"></div>
-                      </div>
-                      <div data-ng-if="!processing && params.enableFeedIndicatorLinking"
-                        class="feed-general-settings padding-left-lg margin-top-lg">
-                        <div class="row">
-                          <div class="col-md-3">
-                            <div class="form-group"
-                              data-ng-class="{ 'has-error': feedIndicatorLinking.feedConfidenceThreshold.$invalid && feedIndicatorLinking.feedConfidenceThreshold.$touched }">
-                              <label for="feedConfidenceThreshold" class="control-label">Select Feed Confidence
-                                Threshold<span class="text-danger"></span>
-                              </label>
-                              <input data-ng-disabled="updateProcessing" id="feedConfidenceThreshold" name="feedConfidenceThreshold" type="number" min="0"
-                                step="1" max="100" class="form-control" data-ng-model="params.feedConfidenceThreshold"
-                                required>
-                              <div data-cs-messages="feedIndicatorLinking.feedConfidenceThreshold">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-8">
-                            <div class="font-size-12 muted font-italic padding-bottom-md">The reputation of an indicator
-                              for which there is a matching feed found, will automatically be updated with the feed's
-                              reputation, given the feed confidence is equal or above this provided value.</div>
-                          </div>
-                        </div>
-                      </div>
-                    </ng-form>
-                  </div>
-                </div>
+            </uib-accordion-heading>
+            <p class="font-Size-13 muted margin-top-negative-20"><span>This rule will
+                enhance the reputation of indicators for which a matching feed is found.
+                The reputation will be automatically updated to reflect the feed's
+                reputation, provided that the feed confidence meets or exceeds the
+                specified threshold.</span></p>
+            <div
+              class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+              <div class="font-size-14">Feed Confidence Threshold
+                <span
+                  data-uib-tooltip="Enter the minimum confidence level needed for a threat feed to update an indicator's reputation. The reputation will only be updated if the feed's confidence meets or exceeds this threshold."
+                  data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                  </i></span>
               </div>
-            </div>
-            <div class="general-settings-footer">
-              <div class="row">
-                <div data-ng-if="params.activeTab.name === 'outgoingFeed'" class="col-md-12 text-left">
-                  <button type="button" class="btn btn-sm btn-primary margin-right-negative-2 padding-right-lg"
-                    data-ng-click="updateTaxiiServerStatus()" title="Update outgoing feed settings" id="update-taxii-server-btn"
-                    data-ng-disabled="processing || updateProcessing || !params.feedOutgoingStatusForm.$dirty"><i
-                      class="icon icon-check margin-right-sm"></i>Save</button>
-                  <button type="button" class="btn btn-sm btn-default margin-right-negative-2 padding-right-lg"
-                    id="revert-taxii-server-btn" data-ng-disabled="processing || updateProcessing || !params.feedOutgoingStatusForm.$dirty" title="Revert Changes"
-                    data-ng-click="revertTaxiiServerStatus()"><i
-                      class="icon icon-revert margin-right-sm"></i>Revert</button>
+              <div class="form-group overflow-auto query-section" data-ng-class="{ 'has-error':
+                                          feedToIndicatorLinkingForm.feedConfidenceThreshold.$invalid &&
+                                          feedToIndicatorLinkingForm.feedConfidenceThreshold.$touched }">
+                <div class="line-height-1 margin-bottom-4 margin-top-negative-3">
+                  <small class="font-light muted">Specify the minimum confidence level required for a threat feed to
+                    update the reputation of matching indicators. If the feed's confidence level meets or exceeds this
+                    threshold, the indicator's reputation will be automatically enhanced based on the feed's
+                    reputation.</small>
                 </div>
-                <div data-ng-if="params.activeTab.name === 'general'" class="col-md-12 text-left">
-                  <button type="button" class="btn btn-sm btn-primary margin-right-negative-2 padding-right-lg"
-                    data-ng-click="updateGenaralSettings()" title="Update Feed Confidence Threshold"
-                    id="save-feed-confidence-threshold-btn" data-ng-disabled="processing || updateProcessing || !params.feedIndicatorLinking.$dirty"><i
-                      class="icon icon-check margin-right-sm"></i>Save</button>
-                  <button type="button" class="btn btn-sm btn-default margin-right-negative-2 padding-right-lg"
-                    id="revert-feed-confidence-threshold-btn" data-ng-disabled="processing || updateProcessing || !params.feedIndicatorLinking.$dirty" title="Revert Changes"
-                    data-ng-click="revertFeedConfidenceSettings()"><i
-                      class="icon icon-revert margin-right-sm"></i>Revert</button>
+                <label for="feedConfidenceThreshold" class="font-08em">Select Feed
+                  Confidence Threshold<span class="required text-danger">*</span>
+                </label>
+                <input id="feedConfidenceThreshold" style="width: 300px;" name="feedConfidenceThreshold" type="number"
+                  data-ng-min="0" min="0" step="1" data-ng-max="100" max="100" class="form-control" maxlength="100"
+                  data-ng-disabled="!feedRules.feedToIndicatorLinking.enabled"
+                  data-ng-model="feedRules.feedToIndicatorLinking.feedConfidenceThreshold" required />
+                <div data-cs-messages="feedToIndicatorLinkingForm.feedConfidenceThreshold"
+                  data-field="{'validation': {'maxlength': 100, 'minlength': 0 } }">
                 </div>
               </div>
             </div>
           </div>
+          <div uib-accordion-group class="panel-default" id="accordion-unstructured-threat-feeds"
+            is-open="toggleUnstructuredFeedsSupport.open" data-ng-disabled="!feedRules.unstructuredFeedsSupport.enabled"
+            ng-form="unstructuredFeedsSupportForm" name="unstructuredFeedsSupportForm">
+            <uib-accordion-heading class="padding-md">
+              <div data-ng-class="{'queue-text-active-color': toggleUnstructuredFeedsSupport.open}"
+                data-ng-click="toggleFeedRules(feedRules.unstructuredFeedsSupport, $event)">
+                <div class="margin-right-lg pull-left">
+                  <span class="queue-card-actions">&nbsp;<i class="fa"
+                      data-ng-class="toggleUnstructuredFeedsSupport.open===true ? 'fa-chevron-down' : 'fa-chevron-right'"></i></span>
+                </div>
+                <div class="display-flex" style="justify-content: space-between;">
+                  <div class="queue-card-header-text margin-right-3">
+                    Unstructured Threat Feeds Support</div>
+                  <div class="margin-right-md">
+                    <label for="unstructuredFeedsSupportSwitchSlider"
+                      class="margin-0 switch switch-pill switch-label switch-success"
+                      data-ng-click="$event.stopPropagation();">
+                      <input type="checkbox" class="switch-input" id="unstructuredFeedsSupportSwitchSlider"
+                        name="unstructuredFeedsSupportSwitchSlider"
+                        data-ng-model="feedRules.unstructuredFeedsSupport.enabled"
+                        data-ng-change="unstructuredFeedsSupportForm.$setDirty()"
+                        data-ng-model-options="{ updateOn: 'default' }" />
+                      <span class="switch-slider" data-checked="Enabled" data-unchecked="Disabled"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </uib-accordion-heading>
+            <p class="font-Size-13 muted margin-top-negative-20"><span>This rule allows the system to ingest
+                unstructured threat feeds from both file sources (such as text files, PDFs, or CSVs) and email
+                communications (based on the selected email client). The system will extract critical threat feeds from
+                these unstructured data sources and automatically ingest it into the Threat Feeds module.
+              </span></p>
+            <div class="mertics-widget-border-bottom margin-bottom-lg"></div>
+            <div class="form-group margin-top-negative-10 padding-left-lg padding-right-lg overflow-auto query-section">
+              <div class="checkbox">
+                <label for="ingestFeedsFromFile" class="font-size-14">
+                  <input id="ingestFeedsFromFile" type="checkbox" name="ingestFeedsFromFile"
+                    data-ng-model="feedRules.unstructuredFeedsSupport.ingestFeedsFromFile.enabled"
+                    data-ng-disabled="!feedRules.unstructuredFeedsSupport.enabled"
+                    data-ng-change="updatesendNotification()" />
+                  <span class="display-inline-block margin-top-1">Ingest Unstructured Threat Feeds from
+                    Files</span>
+                </label>
+                <span
+                  data-uib-tooltip="By enabling this option allows the user to upload unstructured threat feeds from various file sources"
+                  data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                  </i></span>
+              </div>
+              <div class="margin-bottom-md margin-top-negative-10">
+                <small class="font-light muted">Enabling this option allows the user to upload
+                  unstructured threat feeds from various file sources (such as text files, PDFs, or CSVs).</small>
+              </div>
+            </div>
+            <div class="mertics-widget-border-bottom"></div>
+            <div class="form-group padding-left-lg padding-right-lg overflow-auto query-section">
+              <div class="checkbox">
+                <label for="ingestFeedsFromEmail" class="font-size-14">
+                  <input id="ingestFeedsFromEmail" type="checkbox" name="ingestFeedsFromEmail"
+                    data-ng-model="feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.enabled"
+                    data-ng-disabled="!feedRules.unstructuredFeedsSupport.enabled"
+                    data-ng-change="updatesendNotification()" />
+                  <span class="display-inline-block margin-top-1">Ingest Unstructured Threat Feeds from
+                    Email</span>
+                </label>
+                <span
+                  data-uib-tooltip="By enabling this option allows the user to ingest unstructured threat feeds from email"
+                  data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                  </i></span>
+              </div>
+              <div class="margin-bottom-lg margin-top-negative-10">
+                <small class="font-light muted">Enabling this option allows the user to ingest unstructured threat feeds
+                  from email, based on the selected email client.</small>
+              </div>
+              <div data-ng-hide="!feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.enabled">
+                <div
+                  class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+                  <label class="font-08em">
+                    Select Email Client
+                    <span
+                      data-uib-tooltip="Select the email client from which unstructured threat feeds will be ingested."
+                      data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                      </i></span>
+                  </label>
+                  <div class="margin-bottom-4 margin-top-negative-10">
+                    <small class="font-light muted">Choose the email client through which the system will ingest
+                      unstructured threat feeds.</small>
+                  </div>
+                  <div class="cs-select" style="max-width: 300px;">
+                    <select class="form-control" data-ng-model="selectedEmailClient"
+                      data-ng-change="onEmailClientChange(selectedEmailClient)"
+                      data-ng-disabled="!feedRules.unstructuredFeedsSupport.enabled"
+                      data-ng-options="emailClient as emailClient.label for emailClient in feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.selectedEmailClient">
+                    </select>
+                    <span class="fa fa-sort-desc"></span>
+                  </div>
+                  <div data-ng-show="unstructuredFeedsSupportForm.selectedEmailClient.$invalid">
+                    <span class="text-danger">Required Eamil Client Name</span>
+                  </div>
+                  <small class="muted italic">
+                    Note: To configure email ingestion, ensure the <a title="Exchange"
+                      href="/content-hub/my-content/?contentType=connector&uuid={{exchangeUUID}}" target="_blank"
+                      rel="noopener">{{selectedEmailClient.label}}</a> connector is set up.
+                  </small>
+                </div>
+                <div
+                  class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+                  <label class="font-08em">
+                    Email Directory
+                    <span class="required text-danger">*</span>
+                    <span
+                      data-uib-tooltip="Specify the directory where emails with unstructured threat feed attachments are stored."
+                      data-tooltip-append-to-body="true">
+                      <i class="margin-left-sm icon icon-information font-Size-13"></i>
+                    </span>
+                  </label>
+                  <div class="margin-bottom-4 margin-top-negative-10">
+                    <small class="font-light muted">Enter the email directory containing threat feed attachments. The
+                      system will fetch emails from this location for processing.</small>
+                  </div>
+                  <input id="emailFolderName" type="text" class="form-control" name="emailFolderName"
+                    data-ng-model="feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.emailFolderName"
+                    data-ng-disabled="!feedRules.unstructuredFeedsSupport.enabled" ng-required="true"
+                    ng-pattern="/^[a-zA-Z0-9_\-\/ ]+$/" ng-minlength="3" ng-maxlength="255" style="max-width: 300px;">
+                  <div
+                    data-ng-show="unstructuredFeedsSupportForm.emailFolderName.$invalid && unstructuredFeedsSupportForm.emailFolderName.$touched">
+                    <span class="text-danger"
+                      ng-show="unstructuredFeedsSupportForm.emailFolderName.$error.required">Email Folder Name is
+                      required.</span>
+                    <span class="text-danger"
+                      ng-show="unstructuredFeedsSupportForm.emailFolderName.$error.pattern">Invalid folder name. Only
+                      letters, numbers, dashes, underscores, and slashes are allowed.</span>
+                    <span class="text-danger"
+                      ng-show="unstructuredFeedsSupportForm.emailFolderName.$error.minlength">Folder name must be at
+                      least 3 characters long.</span>
+                    <span class="text-danger"
+                      ng-show="unstructuredFeedsSupportForm.emailFolderName.$error.maxlength">Folder name cannot exceed
+                      255 characters.</span>
+                  </div>
+                </div>
+                <div
+                  class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+                  <label class="font-08em">
+                    Threat Feed Ingestion Parameters
+                    <span
+                      data-uib-tooltip="Define parameters like Confidence, Reputation, TLP, Source, and Feed Tags. These values will be automatically assigned to the threat feeds created from the extracted email data."
+                      data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                      </i></span>
+                  </label>
+                  <div class="line-height-1 margin-bottom-4 margin-top-negative-3">
+                    <small class="font-light muted">Automatically map key parameters (Confidence, Reputation, TLP,
+                      Source, and Feed Tags) to threat feeds when they are created from extracted emails. This ensures
+                      proper categorization and enrichment of each feed for more efficient analysis and
+                      response.</small>
+                  </div>
+                  <div data-ng-if="getKeyStoreRecord && feedRules.unstructuredFeedsSupport.enabled" ng-form="feedParams"
+                    name="feedParams" style="max-width: 300px;">
+                    <cs-connector-field-renderer data-cs-form="feedParams"
+                      data-json-fields="feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.unstructuredFeedIngestionParams"
+                      data-connector-data="{'config':feedParams.configuration}"
+                      data-params="feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.unstructuredFeedIngestionParams"
+                      data-enable-record-fields="false" data-enable-jinja="false">
+                    </cs-connector-field-renderer>
+                    <div class="form-group" ng-form="feedParams" name="feedTags">
+                      <label class="control-label margin-top-11">Feed Tags:
+                        <span data-uib-tooltip="Add the unstructured threat feed tags"
+                          data-tooltip-append-to-body="true"><i
+                            class="margin-left-sm icon icon-information font-Size-13">
+                          </i></span>
+                      </label>
+                      <div class="cs-tags-container">
+                        <div class="tags-custom">
+                          <div data-cs-tags="tagsField" cs-allow-add-tag="true"
+                            data-ng-model="feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.unstructuredFeedRecordTags"
+                            data-placeholder="'+ Add Tags'" class="position-relative width-100pt"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="clear-both"></div>
+                  </div>
+                </div>
+                <div
+                  class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+                  <label class="font-08em">
+                    Email Ingestion Schedule
+                    <span data-uib-tooltip="Configure the frequency at which emails are ingested automatically."
+                      data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                      </i></span>
+                  </label>
+                  <div class="line-height-1 margin-bottom-4 margin-top-negative-3">
+                    <small class="font-light muted">Select the frequency at which unstructured threat feeds are ingested
+                      from email. This schedule will then automatically run at the specified frequency to ingest
+                      unstructured threat feeds.</small>
+                  </div>
+                  <div data-ng-if="getKeyStoreRecord && feedRules.unstructuredFeedsSupport.enabled"
+                    class="margin-left-md" data-feed-config-schedule view-widget-vars="viewWidgetVars"
+                    json-data="feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.emailIngestionSchedule"
+                    style="max-width: 700px;">
+                  </div>
+                </div>
+                <div
+                  class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+                  <div class="checkbox">
+                    <label for="automaticBlockIOC" class="font-size-14">
+                      <input id="automaticBlockIOC" type="checkbox" name="automaticBlockIOC"
+                        data-ng-model="feedRules.unstructuredFeedsSupport.ingestFeedsFromEmail.automaticBlockIOCEnabled.enabled"
+                        data-ng-disabled="!feedRules.unstructuredFeedsSupport.enabled" data-cs-focus />&nbsp;Block
+                      Threat Feeds Automatically
+                    </label>
+                    <span
+                      data-uib-tooltip="Enabling this option automatically blocks threat feeds after ingestion. If disabled, feeds must be blocked manually."
+                      data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                      </i></span>
+                  </div>
+                  <div class="margin-bottom-md margin-top-negative-10">
+                    <small class="font-light muted">Enabling this option will automatically block threat feeds
+                      immediately after they are ingested in the Threat Feeds module. If disabled, threat feeds will
+                      require manual blocking.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mertics-widget-border-bottom margin-top-lg"></div>
+            <div class="form-group padding-left-lg padding-right-lg overflow-auto query-section">
+              <div class="checkbox">
+                <label for="sendEmailNotifications" class="font-size-14">
+                  <input id="sendEmailNotifications" type="checkbox" name="sendEmailNotifications"
+                    data-ng-model="feedRules.unstructuredFeedsSupport.sendEmailNotifications.enabled"
+                    data-ng-disabled="!feedRules.unstructuredFeedsSupport.enabled" data-cs-focus>&nbsp;Threat Feed
+                  Ingestion Notifications
+                  <span
+                    data-uib-tooltip="Enter the email addresses authorized to receive notifications for threat feed ingestion. You can specify multiple addresses, separated by commas (,)."
+                    data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                    </i></span>
+                </label>
+              </div>
+              <div data-ng-hide="!feedRules.unstructuredFeedsSupport.sendEmailNotifications.enabled">
+                <div
+                  class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+                  <div class="line-height-1 margin-bottom-4 margin-top-negative-3">
+                    <small class="font-light muted">Specify the email addresses that are authorized to receive
+                      notifications when unstructured threat feeds are ingested. The system will notify these addresses
+                      whenever a
+                      threat feed is successfully ingested.</br>You can enter multiple email addresses,
+                      separated by commas (,), to ensure proper notification distribution.</small>
+                  </div>
+                  <label for="fromEmailAddress" class="control-label">Email Address</label>
+                  <input id="fromEmailAddress" type="text" class="form-control input-sm" name="fromEmailAddress"
+                    data-ng-model="feedRules.unstructuredFeedsSupport.sendEmailNotifications.emailRecipients"
+                    data-ng-disabled="!feedRules.unstructuredFeedsSupport.enabled" cs-email style="max-width: 700px;">
+                  <div data-ng-show="blockHighConfidenceThreatFeedsForm.fromEmailAddress.$invalid">
+                    <span class="text-danger">This field must be a valid email address.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div uib-accordion-group class="panel-default" id="accordion-block-high-confidence-threat-feeds"
+            is-open="toggleBlockHighConfidenceThreatFeeds.open"
+            data-ng-disabled="!feedRules.blockHighConfidenceThreatFeeds.enabled"
+            ng-form="blockHighConfidenceThreatFeedsForm" name="blockHighConfidenceThreatFeedsForm">
+            <uib-accordion-heading class="padding-md">
+              <div data-ng-class="{'queue-text-active-color': toggleBlockHighConfidenceThreatFeeds.open}"
+                data-ng-click="toggleFeedRules(feedRules.blockHighConfidenceThreatFeeds, $event)">
+                <div class="margin-right-lg pull-left">
+                  <span class="queue-card-actions">&nbsp;<i class="fa"
+                      data-ng-class="toggleBlockHighConfidenceThreatFeeds.open===true ? 'fa-chevron-down' : 'fa-chevron-right'"></i></span>
+                </div>
+                <div class="display-flex" style="justify-content: space-between;">
+                  <div class="queue-card-header-text margin-right-3">Block High Confidence
+                    Threat Feeds</div>
+                  <div class="margin-right-md">
+                    <label for="blockHighConfidenceThreatFeedsSwitchSlider"
+                      class="margin-0 switch switch-pill switch-label switch-success"
+                      data-ng-click="$event.stopPropagation();">
+                      <input type="checkbox" class="switch-input" id="blockHighConfidenceThreatFeedsSwitchSlider"
+                        name="blockHighConfidenceThreatFeedsSwitchSlider"
+                        data-ng-model="feedRules.blockHighConfidenceThreatFeeds.enabled"
+                        data-ng-change="blockHighConfidenceThreatFeedsForm.$setDirty()"
+                        data-ng-model-options="{ updateOn: 'default' }" />
+                      <span class="switch-slider" data-checked="Enabled" data-unchecked="Disabled"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </uib-accordion-heading>
+            <p class="font-Size-13 muted margin-top-negative-20"><span>This rule blocks threat feeds with a confidence
+                level greater than the specified threshold. You can choose to block the threat feeds automatically or
+                manually. After blocking, a notification will be sent to authorized recipients to confirm the block
+                action on the firewall.</span></p>
+            <div class="mertics-widget-border-bottom margin-bottom-lg"></div>
+            <div class="form-group margin-top-negative-10 padding-left-lg padding-right-lg overflow-auto query-section">
+              <div class="font-size-14">Feed Confidence Threshold
+                <span
+                  data-uib-tooltip="Enter the minimum confidence level required to block a threat feed. Threat feeds with a confidence greater than this threshold will be blocked."
+                  data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                  </i></span>
+              </div>
+              <div
+                class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md"
+                data-ng-class="{ 'has-error':
+                      blockHighConfidenceThreatFeedsForm.feedConfidenceThreshold.$invalid &&
+                      blockHighConfidenceThreatFeedsForm.feedConfidenceThreshold.$touched }">
+                <div class="line-height-1 margin-bottom-4 margin-top-negative-3">
+                  <small class="font-light muted">Specify the confidence threshold above which threat feeds will be
+                    blocked. Only threat feeds with a confidence level greater than this value will be considered for
+                    automatic or manual blocking.</small>
+                </div>
+                <label for="feedConfidenceThreshold" class="font-08em">Select Feed
+                  Confidence Threshold<span class="required text-danger">*</span>
+                </label>
+                <input id="feedConfidenceThreshold" style="width: 300px;" name="feedConfidenceThreshold" type="number"
+                  data-ng-min="0" min="0" step="1" data-ng-max="100" max="100" class="form-control"
+                  data-ng-disabled="!feedRules.blockHighConfidenceThreatFeeds.enabled" maxlength="100"
+                  data-ng-model="feedRules.blockHighConfidenceThreatFeeds.feedConfidenceThreshold" required />
+                <div data-cs-messages="blockHighConfidenceThreatFeedsForm.feedConfidenceThreshold"
+                  data-field="{'validation': {'maxlength': 100, 'minlength': 0 } }">
+                </div>
+              </div>
+            </div>
+            <div class="mertics-widget-border-bottom margin-top-lg"></div>
+            <div class="form-group padding-left-lg padding-right-lg overflow-auto query-section">
+              <div class="checkbox">
+                <label for="automaticBlockIOCEnabled" class="font-size-14">
+                  <input id="automaticBlockIOCEnabled" type="checkbox" name="automaticBlockIOCEnabled"
+                    data-ng-model="feedRules.blockHighConfidenceThreatFeeds.automaticBlockIOCEnabled.enabled"
+                    data-ng-disabled="!feedRules.blockHighConfidenceThreatFeeds.enabled" data-cs-focus>&nbsp;Block
+                  Threat Feeds Automatically
+                  <span
+                    data-uib-tooltip="Check this box to automatically block threat feeds above the defined confidence threshold. If not checked, threat feeds must be blocked manually."
+                    data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                    </i></span>
+                </label>
+              </div>
+              <div
+                class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+                <div class="line-height-1 margin-bottom-4 margin-top-negative-3">
+                  <small class="font-light muted">Enable this option to automatically block threat feeds that exceed the
+                    specified confidence threshold at the selected frequency. If this option is not checked, threat
+                    feeds will need to be manually blocked.</small>
+                </div>
+                <div data-ng-hide="!feedRules.blockHighConfidenceThreatFeeds.automaticBlockIOCEnabled.enabled">
+                  <div class="line-height-1 margin-bottom-4 margin-top-negative-3">
+                    <small class="font-light muted">Select the frequency at which this automatic block operation should
+                      run. The system will then block threat feeds at the specified intervals without manual
+                      intervention.</small>
+                  </div>
+                  <div data-ng-if="getKeyStoreRecord && feedRules.blockHighConfidenceThreatFeeds.enabled"
+                    class="margin-left-md" data-ng-disabled="!feedRules.blockHighConfidenceThreatFeeds.enabled"
+                    data-feed-config-schedule view-widget-vars="viewWidgetVars"
+                    json-data="feedRules.blockHighConfidenceThreatFeeds.automaticBlockIOCEnabled.threatFeedBlockSchedule"
+                    style="max-width: 700px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mertics-widget-border-bottom margin-top-lg"></div>
+            <div class="form-group padding-left-lg padding-right-lg overflow-auto query-section">
+              <div class="checkbox">
+                <label for="sendEmailNotifications" class="font-size-14">
+                  <input id="sendEmailNotifications" type="checkbox" name="sendEmailNotifications"
+                    data-ng-model="feedRules.blockHighConfidenceThreatFeeds.sendEmailNotifications.enabled"
+                    data-ng-disabled="!feedRules.blockHighConfidenceThreatFeeds.enabled" data-cs-focus>&nbsp;Threat Feed
+                  Block
+                  Notification
+                  <span
+                    data-uib-tooltip="Enable this option to send notifications to specified email addresses when a threat feed is blocked on the firewall. Separate multiple email addresses with commas (,)."
+                    data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                    </i></span>
+                </label>
+              </div>
+              <div data-ng-hide="!feedRules.blockHighConfidenceThreatFeeds.sendEmailNotifications.enabled">
+                <div
+                  class="solid-border element-secondary-bgcolor padding-20 margin-top-md padding-top-md padding-bottom-md">
+                  <div class="line-height-1 margin-bottom-4 margin-top-negative-3">
+                    <small class="font-light muted">Enable this option to send notifications when threat feeds are
+                      blocked on the firewall. Specify the email addresses that should receive these notifications. You
+                      can enter multiple email addresses, separated by commas (,).</small>
+                  </div>
+                  <label for="fromEmailAddress" class="control-label">Email Address</label>
+                  <input id="fromEmailAddress" type="text" class="form-control input-sm" name="fromEmailAddress"
+                    data-ng-model="feedRules.blockHighConfidenceThreatFeeds.sendEmailNotifications.emailRecipients"
+                    data-ng-disabled="!feedRules.blockHighConfidenceThreatFeeds.enabled" cs-email
+                    style="max-width: 700px;">
+                  <div data-ng-show="blockHighConfidenceThreatFeedsForm.fromEmailAddress.$invalid">
+                    <span class="text-danger">This field must be a valid email address.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </uib-accordion>
+      </div>
+      <div class="general-settings-footer">
+        <div class="row">
+          <div class="col-md-12 text-left">
+            <button type="button" class="btn btn-sm btn-primary margin-right-negative-2 padding-right-lg"
+              data-ng-click="save(feedConfigurationSettingsForm)" title="Update Feed Confidence Threshold"
+              id="save-feed-confidence-threshold-btn"
+              data-ng-disabled="!((feedConfigurationSettingsForm.feedToIndicatorLinkingForm.$dirty && feedConfigurationSettingsForm.feedToIndicatorLinkingForm.$valid) || 
+              (feedConfigurationSettingsForm.blockHighConfidenceThreatFeedsForm.$dirty && feedConfigurationSettingsForm.blockHighConfidenceThreatFeedsForm.$valid) ||
+              (feedConfigurationSettingsForm.unstructuredFeedsSupportForm.$dirty && feedConfigurationSettingsForm.unstructuredFeedsSupportForm.$valid))"><i
+                class="icon icon-check margin-right-sm"></i>Save</button>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>
